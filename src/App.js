@@ -1,25 +1,59 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+import { getUsers } from './api/getUsers';
+import { CircularProgress } from '@mui/material';
+import User from './containers/User';
 import './App.css';
+import FilterArea from './containers/FilterArea';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [users, setUsers] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(false);
+	const [filteredValue, setFilteredValue] = useState({
+		gender: 'male',
+		page: 1,
+		results: 12,
+		national: '',
+	});
+	const handleChangeGender = (value) => {
+		setFilteredValue({ ...filteredValue, gender: value });
+	};
+	const handleChangeNat = (value) => {
+		setFilteredValue({ ...filteredValue, national: value });
+	};
+	const handleChangeResults = (value) => {
+		setFilteredValue({ ...filteredValue, results: value });
+	};
+	const handleChangePage = (value) => {
+		setFilteredValue({ ...filteredValue, page: value });
+	};
+
+	useEffect(() => {
+		setLoading(true);
+		getUsers(filteredValue)
+			.then((users) => setUsers(users))
+			.catch(() => setError(true))
+			.finally(() => setLoading(false));
+	}, [filteredValue]);
+	console.log(users);
+
+	return (
+		<>
+			<FilterArea
+				filteredValue={filteredValue}
+				onChangeGender={handleChangeGender}
+				onChangeNationality={handleChangeNat}
+				onChangeResults={handleChangeResults}
+				onChangePage={handleChangePage}
+			/>
+			{loading && <CircularProgress />}
+			{error && 'some error'}
+			{!loading &&
+				!error &&
+				users &&
+				users.map((user) => <User key={user.email} {...user} />)}
+		</>
+	);
 }
 
 export default App;
