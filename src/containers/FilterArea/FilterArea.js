@@ -11,8 +11,10 @@ import {
 	ToggleButton,
 	Typography,
 } from '@mui/material';
+import LocalSwitch from '../../providers/Locales/LocalSwitch';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
+import { useTranslation } from 'react-i18next';
 const FilterArea = ({
 	filteredValue,
 	onChangeGender,
@@ -54,6 +56,7 @@ const FilterArea = ({
 	const handleChangePage = (e, value) => {
 		onChangePage(value);
 	};
+	const { t } = useTranslation();
 	console.log(filteredValue);
 	return (
 		<>
@@ -62,8 +65,15 @@ const FilterArea = ({
 				sx={{ justifyContent: 'space-between', padding: 1 }}
 			>
 				<div>
-					<Typography>Gender:{filteredValue.gender}</Typography>
-					<ToggleButtonGroup size='small' variant='contained'>
+					<Typography>
+						{t('gender')}:
+						{filteredValue.gender === 'male' ? t('male') : t('female')}
+					</Typography>
+					<ToggleButtonGroup
+						size='small'
+						variant='contained'
+						value={filteredValue.gender}
+					>
 						<ToggleButton value='male' onClick={handleChangeGender}>
 							<MaleIcon />
 						</ToggleButton>
@@ -74,7 +84,9 @@ const FilterArea = ({
 				</div>
 				<div>
 					<Stack>
-						<Typography>Page: {filteredValue.page}</Typography>
+						<Typography>
+							{t('page')}: {filteredValue.page}
+						</Typography>
 						<Pagination
 							count={10}
 							onChange={handleChangePage}
@@ -83,7 +95,7 @@ const FilterArea = ({
 					</Stack>
 				</div>
 				<FormControl sx={{ width: 200 }}>
-					<InputLabel id='demo-simple-select-label'>Results</InputLabel>
+					<InputLabel id='demo-simple-select-label'>{t('results')}</InputLabel>
 					<Select
 						labelId='demo-simple-select-label'
 						id='demo-simple-select'
@@ -99,11 +111,13 @@ const FilterArea = ({
 					</Select>
 				</FormControl>
 				<FormControl sx={{ width: 200 }}>
-					<InputLabel id='demo-simple-select-label'>Nat</InputLabel>
+					<InputLabel id='demo-simple-select-label'>
+						{t('nationality')}
+					</InputLabel>
 					<Select
 						labelId='demo-simple-select-label'
 						id='demo-simple-select'
-						label='Age'
+						label='Nationality'
 						value={filteredValue.national}
 						onChange={handleChangeNationality}
 					>
@@ -114,6 +128,7 @@ const FilterArea = ({
 						))}
 					</Select>
 				</FormControl>
+				<LocalSwitch />
 			</Stack>
 			<Divider />
 		</>
