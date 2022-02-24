@@ -61,7 +61,7 @@ export default function LocalSwitch() {
 			<Typography>RU</Typography>
 			<AntSwitch
 				onChange={handleChangeLang}
-				defaultChecked
+				checked={i18next.language === 'en'}
 				inputProps={{ 'aria-label': 'ant design' }}
 			/>
 			<Typography>EN</Typography>

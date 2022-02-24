@@ -20,5 +20,7 @@ export const en = {
 		phone: 'Phone',
 		email: 'E-mail',
 		location: 'Location',
+		themeLight: 'Light',
+		themeDark: 'Dark',
 	},
 };

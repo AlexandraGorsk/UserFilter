@@ -20,5 +20,7 @@ export const ru = {
 		phone: 'Телефон',
 		email: 'Электронная почта',
 		location: 'Адрес',
+		themeLight: 'Светлая тема',
+		themeDark: 'Темная тема',
 	},
 };

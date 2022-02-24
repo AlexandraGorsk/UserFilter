@@ -5,7 +5,6 @@ import User from './containers/User';
 import './App.css';
 import FilterArea from './containers/FilterArea';
 
-
 function App() {
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);

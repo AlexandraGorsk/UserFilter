@@ -12,6 +12,7 @@ import {
 	Typography,
 } from '@mui/material';
 import LocalSwitch from '../../providers/Locales/LocalSwitch';
+import ThemeSwitch from '../../providers/Theme/ThemeSwitch';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { useTranslation } from 'react-i18next';
@@ -128,8 +129,12 @@ const FilterArea = ({
 						))}
 					</Select>
 				</FormControl>
-				<LocalSwitch />
+				<Stack column>
+					<LocalSwitch />
+					<ThemeSwitch />
+				</Stack>
 			</Stack>
+
 			<Divider />
 		</>
 	);
