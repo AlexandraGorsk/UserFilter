@@ -4,6 +4,8 @@ import { CircularProgress } from '@mui/material';
 import User from './containers/User';
 import './App.css';
 import FilterArea from './containers/FilterArea';
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
 	const [users, setUsers] = useState([]);
@@ -38,7 +40,7 @@ function App() {
 	console.log(users);
 
 	return (
-		<>
+		<Provider store={store}>
 			<FilterArea
 				filteredValue={filteredValue}
 				onChangeGender={handleChangeGender}
@@ -52,7 +54,7 @@ function App() {
 				!error &&
 				users &&
 				users.map((user) => <User key={user.email} {...user} />)}
-		</>
+		</Provider>
 	);
 }
 
