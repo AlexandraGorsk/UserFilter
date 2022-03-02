@@ -1,11 +1,17 @@
 import * as apiUsers from '../../api/getUsers';
-export const RECEIVE_USERS = 'RECEIVE_USERS';
+export const SET_USERS_REQUEST_STATUS_PENDING =
+	'SET_USERS_REQUEST_STATUS_PENDING';
+
+export const SET_USERS_REQUEST_STATUS_FAILURE =
+	'SET_USERS_REQUEST_STATUS_FAILURE';
+
+export const SET_USERS = 'SET_USERS';
 export const SET_GENDER = 'SET_GENDER';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_NAT = 'SET_NAT';
 export const SET_RESULT = 'SET_RESULT';
 export const receiveUsers = (users) => ({
-	type: RECEIVE_USERS,
+	type: SET_USERS,
 	payload: users,
 });
 export const setNat = (value) => ({
@@ -24,8 +30,25 @@ export const setResult = (value) => ({
 	type: SET_RESULT,
 	payload: value,
 });
-export const getUsers = (users) => {
+export const setUsersRequestStatusPending = () => ({
+	type: SET_USERS_REQUEST_STATUS_PENDING,
+});
+
+export const setUsersRequestSuccess = (posts) => ({
+	type: SET_USERS,
+	payload: posts,
+});
+
+export const setUsersRequestStatusFailure = () => ({
+	type: SET_USERS_REQUEST_STATUS_FAILURE,
+});
+export const getUsers = ({ page, gender, results, national }) => {
 	return (dispatch) => {
-		apiUsers.getUsers(users).then(() => dispatch(receiveUsers(users)));
+		dispatch(setUsersRequestStatusPending());
+
+		apiUsers
+			.getUsers({ page, gender, results, national })
+			.then((users) => dispatch(setUsersRequestSuccess(users)))
+			.catch(() => dispatch(setUsersRequestStatusFailure()));
 	};
 };

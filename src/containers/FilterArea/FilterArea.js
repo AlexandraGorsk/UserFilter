@@ -12,18 +12,22 @@ import {
 	Typography,
 } from '@mui/material';
 import LocalSwitch from '../../providers/Locales/LocalSwitch';
-import ThemeSwitch from '../../providers/Theme/ThemeSwitch';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { useTranslation } from 'react-i18next';
-const FilterArea = ({
-	filteredValue,
-	onChangeGender,
-	onChangeNationality,
-	onChangeResults,
-	onChangePage,
-}) => {
-	const national = [
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getSlice,
+	setGender,
+	setNat,
+	setPage,
+	setResult,
+} from '../../store/users';
+const FilterArea = () => {
+	const dispatch = useDispatch();
+	const { gender, page, results, national } = useSelector(getSlice);
+	//page, gender, results, national
+	const nationality = [
 		'AU',
 		'BR',
 		'CA',
@@ -44,21 +48,22 @@ const FilterArea = ({
 	];
 	const handleChangeGender = (e) => {
 		const value = e.currentTarget.value;
-		onChangeGender(value);
+		dispatch(setGender(value));
 	};
 	const handleChangeNationality = (e) => {
 		const value = e.target.value;
-		onChangeNationality(value);
+		dispatch(setNat(value));
 	};
 	const handleChangeResults = (e) => {
 		const value = e.target.value;
-		onChangeResults(value);
+		dispatch(setResult(value));
 	};
 	const handleChangePage = (e, value) => {
-		onChangePage(value);
+		setPage(value);
+		dispatch(setResult(value));
 	};
+	console.log(national, gender);
 	const { t } = useTranslation();
-	console.log(filteredValue);
 	return (
 		<>
 			<Stack
@@ -67,14 +72,9 @@ const FilterArea = ({
 			>
 				<div>
 					<Typography>
-						{t('gender')}:
-						{filteredValue.gender === 'male' ? t('male') : t('female')}
+						{t('gender')}:{gender === 'male' ? t('male') : t('female')}
 					</Typography>
-					<ToggleButtonGroup
-						size='small'
-						variant='contained'
-						value={filteredValue.gender}
-					>
+					<ToggleButtonGroup size='small' variant='contained' value={gender}>
 						<ToggleButton value='male' onClick={handleChangeGender}>
 							<MaleIcon />
 						</ToggleButton>
@@ -86,13 +86,9 @@ const FilterArea = ({
 				<div>
 					<Stack>
 						<Typography>
-							{t('page')}: {filteredValue.page}
+							{t('page')}: {page}
 						</Typography>
-						<Pagination
-							count={10}
-							onChange={handleChangePage}
-							page={filteredValue.page}
-						/>
+						<Pagination count={10} onChange={handleChangePage} page={page} />
 					</Stack>
 				</div>
 				<FormControl sx={{ width: 200 }}>
@@ -100,7 +96,7 @@ const FilterArea = ({
 					<Select
 						labelId='demo-simple-select-label'
 						id='demo-simple-select'
-						value={filteredValue.results}
+						value={results}
 						label='Results'
 						onChange={handleChangeResults}
 					>
@@ -119,10 +115,10 @@ const FilterArea = ({
 						labelId='demo-simple-select-label'
 						id='demo-simple-select'
 						label='Nationality'
-						value={filteredValue.national}
+						value={national}
 						onChange={handleChangeNationality}
 					>
-						{national.map((item) => (
+						{nationality.map((item) => (
 							<MenuItem value={item} key={item}>
 								{item}
 							</MenuItem>
@@ -131,7 +127,6 @@ const FilterArea = ({
 				</FormControl>
 				<Stack column>
 					<LocalSwitch />
-					<ThemeSwitch />
 				</Stack>
 			</Stack>
 
